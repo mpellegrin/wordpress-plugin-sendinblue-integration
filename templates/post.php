@@ -1,0 +1,75 @@
+<?php
+$start_date = strftime('%Y-%m-%d %H:%M:%S', time());
+$end_date = strftime('%Y-%m-%d %H:%M:%S', strtotime('+30 days'));
+$events = tribe_get_events(array('post_status' => 'publish', 'start_date' => $start_date, 'end_date' => $end_date));
+?>
+<?php foreach ($events as $post): ?>
+<?php setup_postdata($post); ?>
+<?php $e = error_reporting(error_reporting() & ~E_NOTICE); ?>
+<tr>
+	<td style="background-color:#d6d6d6;" bgcolor="#d6d6d6" align="center" valign="top">
+		<div>
+			<table class="rnb-del-min-width" style="min-width:100%; background-color:#d6d6d6;" name="Layout_2" id="Layout_2" cellspacing="0" cellpadding="0" border="0" bgcolor="#d6d6d6" width="100%">
+				<tbody>
+					<tr>
+						<td class="rnb-del-min-width" style="background-color: #d6d6d6;" bgcolor="#d6d6d6" align="center" valign="top">
+							<table class="rnb-container" style="max-width: 100%; min-width: 100%; table-layout: fixed; background-color: rgb(255, 255, 255); border-radius: 0px; border-collapse: separate; padding-left: 20px; padding-right: 20px;" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff" width="100%">
+								<tbody>
+									<tr>
+										<td style="font-size:1px; line-height:1px;" height="20">&nbsp;</td>
+									</tr>
+									<?php if (has_post_thumbnail($post->ID)): ?>
+									<tr><td class="img-block-center" align="left" width="100%" valign="top"><a href="<?php echo get_permalink($post->ID); ?>"><img width="100%" src="<?php echo get_the_post_thumbnail_url($post->ID, 'large'); ?>" /></a></td></tr>
+									<tr>
+										<td class="col_td_gap" style="font-size:1px; line-height:1px;" height="10">&nbsp;</td>
+									</tr>
+									<?php endif; ?>
+									<tr><td style="font-size:18px; font-family:Arial,Helvetica,sans-serif; color:#999; text-align:left;">
+										<a href="<?php echo get_permalink($post->ID); ?>">
+											<span style="color:#999; "><strong><span style="font-size:18px;"><?php echo $post->post_title; ?></span></strong></span>
+										</a>
+									</td></tr>
+									<tr>
+										<td class="col_td_gap" style="font-size:1px; line-height:1px;" height="10">&nbsp;</td>
+									</tr>
+									<tr><td style="font-size:14px; font-family:Arial,Helvetica,sans-serif, sans-serif; color:#555;">
+										<a href="<?php echo get_permalink($post->ID); ?>">
+											<?php the_content(''); ?>
+											<span class="read-more"><?php echo _e('Read more', 'sib-integration'); ?></span>
+										</a>
+									</td></tr>
+									<tr>
+										<td style="font-size:1px; line-height:1px;" height="20">&nbsp;</td>
+									</tr>
+
+								</tbody>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</td>
+</tr>
+<tr>
+	<td style="background-color:#d6d6d6;" bgcolor="#d6d6d6" align="center" valign="top">
+		<table class="rnb-del-min-width" style="min-width:590px; background-color:#d6d6d6;" name="Layout_" id="Layout_" cellspacing="0" cellpadding="0" border="0" width="100%">
+			<tbody>
+				<tr>
+					<td class="rnb-del-min-width" style="min-width:590px; background-color:#d6d6d6;" bgcolor="#d6d6d6" align="center" valign="top">
+						<table style="background-color:#d6d6d6;" cellspacing="0" cellpadding="0" border="0" bgcolor="#d6d6d6" width="100%" height="30">
+							<tbody>
+								<tr>
+									<td valign="top" height="30"> <img style="display:block; max-height:30px; max-width:20px;" alt="" src="http://img.mailinblue.com/new_images/rnb/rnb_space.gif" width="20" height="30"> </td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</td>
+</tr>
+
+<?php endforeach; ?>
+<?php if (isset($e)) { error_reporting($e); } ?>

@@ -1,0 +1,49 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2017-08-03 00:35+0200\n"
+"PO-Revision-Date: 2017-08-03 00:36+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: includes/newsletter.type.php:10 includes/newsletter.type.php:15
+msgid "Newsletters"
+msgstr "Newsletters"
+
+#: includes/newsletter.type.php:11
+msgid "Newsletter"
+msgstr "Newsletter"
+
+#: includes/newsletter_category.type.php:10
+#: includes/newsletter_category.type.php:11
+msgid "Newsletter Category"
+msgstr "Catégorie de Newsletter"
+
+#: includes/newsletter_category.type.php:15
+msgid "Newsletter Categories"
+msgstr "Catégories de Newsletter"
+
+#: sendinblue-integration.php:202
+msgid "This interface creates the campaigns in SendInBlue interface"
+msgstr "Cette interface crée des campagnes dans l'interface de SendInBlue"
+
+#: sendinblue-integration.php:208
+msgid "Wordpress Campaigns"
+msgstr "Campagnes Wordpress"
+
+#: sendinblue-integration.php:209
+msgid "SendInBlue Campaigns"
+msgstr "campagnes SendInBlue"
+
+#: templates/post.php:38
+msgid "Read more"
+msgstr "Lire la suite"
