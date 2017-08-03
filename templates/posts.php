@@ -19,7 +19,7 @@ $posts = new WP_Query($args);
 ?>
 <?php if ($posts->have_posts()): ?>
 <?php while ($posts->have_posts()): ?>
-<?php $posts->the_post(); ?>
+<?php $post = $posts->the_post(); ?>
 <?php if (is_preview()) { $post_id = (int) $_GET['preview_id']; } else { $post_id = $post->ID; } ?>
 <?php $e = error_reporting(error_reporting() & ~E_NOTICE); ?>
 <tr>
