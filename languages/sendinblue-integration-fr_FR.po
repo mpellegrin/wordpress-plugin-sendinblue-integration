@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-08-03 11:05+0200\n"
-"PO-Revision-Date: 2017-08-03 11:05+0200\n"
+"POT-Creation-Date: 2017-08-03 19:25+0200\n"
+"PO-Revision-Date: 2017-08-03 19:25+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -32,21 +32,63 @@ msgstr "Catégorie de Newsletter"
 msgid "Newsletter Categories"
 msgstr "Catégories de Newsletter"
 
-#: post.php:38 templates/post.php:44
-msgid "Read more"
-msgstr "Lire la suite"
+#: sendinblue-integration.php:48
+msgid "Newsletter default settings"
+msgstr "Paramètres par défaut des newsletters"
 
-#: sendinblue-integration.php:202
+#: sendinblue-integration.php:56 sendinblue-integration.php:358
+msgid "Add Events to Newsletter"
+msgstr "Ajouter les Événements à la Newsletters"
+
+#: sendinblue-integration.php:57
+msgid "How many days ahead we should display events"
+msgstr "Sur combien de jours récupérer les événements"
+
+#: sendinblue-integration.php:58 sendinblue-integration.php:374
+msgid "Add Posts to Newsletter"
+msgstr "Ajouter les Articles à la Newsletters"
+
+#: sendinblue-integration.php:59
+msgid "How many posts we should display in Newsletter"
+msgstr "Combien d'articles afficher dans la Newsletter"
+
+#: sendinblue-integration.php:60
+msgid "Categories of posts that will be retrieved"
+msgstr "Catégories des articles à récupérer"
+
+#: sendinblue-integration.php:104
+msgid "Settings"
+msgstr "Paramètres"
+
+#: sendinblue-integration.php:268
 msgid "This interface creates the campaigns in SendInBlue interface"
 msgstr "Cette interface crée des campagnes dans l'interface de SendInBlue"
 
-#: sendinblue-integration.php:208
+#: sendinblue-integration.php:274
 msgid "Wordpress Campaigns"
 msgstr "Campagnes Wordpress"
 
-#: sendinblue-integration.php:209
+#: sendinblue-integration.php:275
 msgid "SendInBlue Campaigns"
 msgstr "campagnes SendInBlue"
+
+#: sendinblue-integration.php:347
+msgid "Configure Newsletter"
+msgstr "Configurer la Newsletter"
+
+#: sendinblue-integration.php:360
+#, php-format
+msgid "Show events %s days ahead"
+msgstr "Afficher les événements %s jours en avant"
+
+#: sendinblue-integration.php:376
+#, php-format
+msgid "Show %s posts from categories %s"
+msgstr "Afficher %s articles à partir des catégories %s"
+
+#: templates/events.php:48 templates/posts.php:54
+msgid "Read more"
+msgstr "Lire la suite"
 
 #: templates/html.php:340
 msgid "See online version"
