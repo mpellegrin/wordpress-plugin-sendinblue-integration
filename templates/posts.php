@@ -1,15 +1,10 @@
 <?php
-if (get_the_ID()) {
-	$post_id = get_the_ID();
-} else {
-	$post_id = '';
-}
 $categories = get_post_meta($post_id,'sib_newsletter_add_posts_categories', true);
 $default_categories = get_option('sib_newsletter_default_add_posts_categories');
 $limit = get_post_meta($post_id,'sib_newsletter_add_posts_count', true);
 $default_limit = get_option('sib_newsletter_default_add_posts_count');
 $args = array(
-	'category__in' => ($add_posts_categories && is_array($add_posts_categories) ? $add_posts_categories : $default_categories),
+	'category__in' => ($categories && is_array($categories) ? $categories : $default_categories),
 	'post_status' => 'publish',
 	'order' => 'DESC',
 	'ignore_sticky_posts' => true,
@@ -19,8 +14,8 @@ $posts = new WP_Query($args);
 ?>
 <?php if ($posts->have_posts()): ?>
 <?php while ($posts->have_posts()): ?>
-<?php $post = $posts->the_post(); ?>
-<?php if (is_preview()) { $post_id = (int) $_GET['preview_id']; } else { $post_id = $post->ID; } ?>
+<?php $posts->the_post(); ?>
+<?php if (is_preview()) { $post_id = (int) $_GET['preview_id']; } else { $post_id = get_the_ID(); } ?>
 <?php $e = error_reporting(error_reporting() & ~E_NOTICE); ?>
 <tr>
 	<td style="background-color:#d6d6d6;" bgcolor="#d6d6d6" align="center" valign="top">
@@ -35,14 +30,14 @@ $posts = new WP_Query($args);
 										<td style="font-size:1px; line-height:1px;" height="20">&nbsp;</td>
 									</tr>
 									<?php if (has_post_thumbnail($post->ID)): ?>
-									<tr><td class="img-block-center" align="left" width="100%" valign="top"><a href="<?php echo get_permalink($post->ID); ?>"><img width="100%" src="<?php echo get_the_post_thumbnail_url($post->ID, 'sib_newsletter_thumbnail'); ?>" /></a></td></tr>
+									<tr><td class="img-block-center" align="left" width="100%" valign="top"><a href="<?php echo htmlentities(get_permalink($post_id)); ?>"><img width="100%" src="<?php echo htmlentities(get_the_post_thumbnail_url($post_id, 'sib_newsletter_thumbnail')); ?>" /></a></td></tr>
 									<tr>
 										<td class="col_td_gap" style="font-size:1px; line-height:1px;" height="10">&nbsp;</td>
 									</tr>
 									<?php endif; ?>
 									<tr><td style="font-size:18px; font-family:Arial,Helvetica,sans-serif; color:#555; text-align:left;">
-										<a href="<?php echo get_permalink($post->ID); ?>">
-											<span style="color:#555; "><strong><span style="font-size:18px;"><?php echo $post->post_title; ?></span></strong></span>
+										<a href="<?php echo htmlentities(get_permalink($post_id)); ?>">
+											<span style="color:#555; "><strong><span style="font-size:18px;"><?php echo htmlentities($post->post_title); ?></span></strong></span>
 										</a>
 									</td></tr>
 									<tr>
@@ -50,8 +45,8 @@ $posts = new WP_Query($args);
 									</tr>
 									<tr><td style="font-size:14px; font-family:Arial,Helvetica,sans-serif, sans-serif; color:#555;">
 										<?php the_content(''); ?>
-										<a href="<?php echo get_permalink($post->ID); ?>">
-											<span class="read-more"><?php echo _e('Read more', 'sendinblue-integration'); ?></span>
+										<a href="<?php echo htmlentities(get_permalink($post_id)); ?>">
+											<span class="read-more"><?php echo __('Read more', 'sendinblue-integration'); ?></span>
 										</a>
 									</td></tr>
 									<tr>
