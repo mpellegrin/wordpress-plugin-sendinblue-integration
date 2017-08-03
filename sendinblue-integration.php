@@ -10,7 +10,7 @@ Description: Hooks for SendInBlue integration
 Author: Mathieu Pellegrin
 Version: 1.0
 Author URI: http://mathieu-pellegrin.fr/
-Text Domain: sib-integration
+Text Domain: sendinblue-integration
 Domain Path: /languages
 License: GPL v3 - http://www.gnu.org/licenses/gpl-3.0.html
 */
@@ -29,7 +29,7 @@ require_once(__DIR__ . '/includes/newsletter_category.type.php');
 
 // Load Text Domain
 function sib_integration_load_plugin_textdomain() {
-	load_plugin_textdomain( 'sib-integration', FALSE, __DIR__ . '/languages/' );
+	load_plugin_textdomain( 'sendinblue-integration', FALSE, basename(__DIR__) . '/languages/' );
 }
 add_action( 'plugins_loaded', 'sib_integration_load_plugin_textdomain' );
 
@@ -199,23 +199,23 @@ function _sib_integration_get_api() {
 function sib_integration_view() {
 	?><div id="#sib_integration">
 	<h1>SendInBlue Integration</h1>
-	<p><?php echo _e('This interface creates the campaigns in SendInBlue interface', 'sib-integration'); ?></p>
-    <a href="<?php echo admin_url( 'admin-post.php?action=sib_integration_preview_campaign' ) ?>" target="_blank">Aperçu</a>
-    <button id="sendinblue_create_campaign" data-href="<?php echo htmlspecialchars(admin_url( 'admin-post.php?action=_sib_integration_create_campaign' )) ?>"><?php echo htmlentities('Créer une campagne') ;?></button>
-    <div class="messages"></div>
+	<p><?php echo _e('This interface creates the campaigns in SendInBlue interface', 'sendinblue-integration'); ?></p>
+	<a href="<?php echo admin_url( 'admin-post.php?action=sib_integration_preview_campaign' ) ?>" target="_blank">Aperçu</a>
+	<button id="sendinblue_create_campaign" data-href="<?php echo htmlspecialchars(admin_url( 'admin-post.php?action=_sib_integration_create_campaign' )) ?>"><?php echo htmlentities('Créer une campagne') ;?></button>
+	<div class="messages"></div>
 	<div id="sib_integration--tabs">
 		<ul>
-			<li><a href="#sib_integration--tab_wordpress"><?php echo _e('Wordpress Campaigns', 'sib-integration'); ?></a></li>
-			<li><a href="#sib_integration--tab_sendinblue"><?php echo _e('SendInBlue Campaigns', 'sib-integration'); ?></a></li>
+			<li><a href="#sib_integration--tab_wordpress"><?php echo _e('Wordpress Campaigns', 'sendinblue-integration'); ?></a></li>
+			<li><a href="#sib_integration--tab_sendinblue"><?php echo _e('SendInBlue Campaigns', 'sendinblue-integration'); ?></a></li>
 		</ul>
 		<div id="sib_integration--tab_wordpress">
-    		<?php _sib_integration_get_wordpress_table(); ?>
+			<?php _sib_integration_get_wordpress_table(); ?>
 		</div>
 		<div id="sib_integration--tab_sendinblue">
-    		<?php _sib_integration_get_sendinblue_table(); ?>
+			<?php _sib_integration_get_sendinblue_table(); ?>
 		</div>
-    </div>
-    <script type="text/javascript">
+	</div>
+	<script type="text/javascript">
 		jQuery(document).ready( function() { jQuery('#sib_integration--tabs').tabs({ active: 'sib_integration--tab_wordpress' }); });
 		jQuery('#sendinblue_create_campaign').click(function(e) {
 			var url = jQuery(e.target).attr('data-href');
@@ -224,13 +224,13 @@ function sib_integration_view() {
 			});
 		});
 	</script>
-    </div><?php
+	</div><?php
 }
 
 // Display Newsletter preview instead of Wordpress templates
 function sib_integration_override_template( $template )
 {
-    if ( get_post_type() == 'sib_newsletter' ) {
+	if ( get_post_type() == 'sib_newsletter' ) {
 		if (isset($_GET['preview_nonce'])) {
 			echo 'Preview does not work (yet) with this plugin, please save your content and then click on the permalink.';
 			exit();
@@ -241,7 +241,7 @@ function sib_integration_override_template( $template )
 		ob_end_clean();
 		echo $html_content;
 		exit();
-    }
+	}
 }
 add_filter( 'template_redirect', 'sib_integration_override_template' );
 
