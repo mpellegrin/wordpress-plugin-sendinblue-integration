@@ -4,17 +4,30 @@ if (get_the_ID()) {
 } else {
 	$post_id = '';
 }
-$posts = new WP_Query(array(
-	'post_type' => 'sib_newsletter',
-	'post__in' => array($post_id),
-	'post_status' => 'publish',
-	'order' => 'ASC',
-	'ignore_sticky_posts' => true,
-));
+if (is_preview()) {
+	$args = array(
+		'post_status' => 'any',
+		'post_parent' => intval($_GET['preview_id']),
+		'post_type' => 'revision',
+		'sort_column' => 'ID',
+		'sort_order' => 'desc',
+		'posts_per_page' => 1,
+	);
+} else {
+	$args = array(
+		'post_type' => 'sib_newsletter',
+		'post__in' => array($post_id),
+		'post_status' => 'publish',
+		'order' => 'ASC',
+		'ignore_sticky_posts' => true,
+	);
+}
+$posts = new WP_Query($args);
 ?>
 <?php if ($posts->have_posts()): ?>
 <?php while ($posts->have_posts()): ?>
 <?php $posts->the_post(); ?>
+<?php if (is_preview()) { $post_id = (int) $_GET['preview_id']; } else { $post_id = $post->ID; } ?>
 <?php $e = error_reporting(error_reporting() & ~E_NOTICE); ?>
 <tr>
 	<td style="background-color:#d6d6d6;" bgcolor="#d6d6d6" align="center" valign="top">
@@ -28,8 +41,8 @@ $posts = new WP_Query(array(
 									<tr>
 										<td style="font-size:1px; line-height:1px;" height="20">&nbsp;</td>
 									</tr>
-									<?php if (has_post_thumbnail($post->ID)): ?>
-									<tr><td class="img-block-center" align="center" style="max-width: 100%;" valign="top"><a href="<?php echo get_site_url(); ?>"><img style="max-width: 100%;" src="<?php echo get_the_post_thumbnail_url($post->ID, 'large'); ?>" /></a></td></tr>
+									<?php if (has_post_thumbnail($post_id)): ?>
+									<tr><td class="img-block-center" align="center" style="max-width: 100%;" valign="top"><a href="<?php echo get_site_url(); ?>"><img style="max-width: 100%;" src="<?php echo get_the_post_thumbnail_url($post_id, 'large'); ?>" /></a></td></tr>
 									<tr>
 										<td class="col_td_gap" style="font-size:1px; line-height:1px;" height="10">&nbsp;</td>
 									</tr>

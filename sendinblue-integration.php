@@ -107,6 +107,16 @@ function _sib_integration_update_campaign( $post_id ) {
 		$html_content = ob_get_clean();
 		ob_end_clean();
 
+		// Get Senders
+		$data = array( "option" => "" );
+		$result = $mailin->get_senders($data);
+
+		if ($result['code'] == 'success') {
+			$senders = $result['data'];
+		} else {
+			return false;
+		}
+
 		$data = array(
 			'id' => $campaign_id,
 			'name' => $sib_post->post_title,
@@ -119,7 +129,7 @@ function _sib_integration_update_campaign( $post_id ) {
 		$result = $mailin->update_campaign($data);
 		//echo htmlspecialchars($result['message']);
 		if ($result['code'] == 'success') {
-			return $result['data']['id'];
+			return $campaign_id;
 		} else {
 			return false;
 		}
@@ -231,6 +241,13 @@ function sib_integration_view() {
 function sib_integration_override_template( $template )
 {
 	if ( get_post_type() == 'sib_newsletter' ) {
+		$template = locate_template( array( 'sendinblue-integration/html.php' ) );
+		if ($template == '') {
+			return __DIR__ . '/templates/html.php';
+		} else {
+			return $template;
+		}
+		/*
 		if (isset($_GET['preview_nonce'])) {
 			echo 'Preview does not work (yet) with this plugin, please save your content and then click on the permalink.';
 			exit();
@@ -241,9 +258,10 @@ function sib_integration_override_template( $template )
 		ob_end_clean();
 		echo $html_content;
 		exit();
+		*/
 	}
 }
-add_filter( 'template_redirect', 'sib_integration_override_template' );
+add_filter( 'template_include', 'sib_integration_override_template' );
 
 // Execute campaign creation when post is saved
 function sib_save_newsletter($post_id) {
@@ -327,7 +345,7 @@ function sib_integration_newsletter_metabox_save($post_id) {
   if (isset($_POST['sib_newsletter_add_posts_count'])) {
     update_post_meta($post_id, 'sib_newsletter_add_posts_count', (int) $_POST['sib_newsletter_add_posts_count']);
    }
-  if (isset($_POST['sib_newsletter_add_posts_categories'])) {
+  if (isset($_POST['sib_newsletter_add_posts_categories']) && is_array($_POST['sib_newsletter_add_posts_categories'])) {
 	delete_post_meta($post_id, 'sib_newsletter_add_posts_categories');
 	foreach ($_POST['sib_newsletter_add_posts_categories'] as $category) {
 		add_post_meta($post_id, 'sib_newsletter_add_posts_categories', (int) $category);
