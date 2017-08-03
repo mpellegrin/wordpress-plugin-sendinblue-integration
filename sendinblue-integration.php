@@ -23,7 +23,6 @@ if (!class_exists('Mailin')) {
 require_once(__DIR__ . '/includes/newsletter.type.php');
 require_once(__DIR__ . '/includes/newsletter_category.type.php');
 
-//add_action('admin_menu', 'sib_integration_menu');
 //add_action('admin_post_sib_integration_create_campaign', '_sib_integration_create_campaign');
 //add_action('admin_head', 'sib_integration_cssjs');
 
@@ -33,21 +32,72 @@ function sib_integration_load_plugin_textdomain() {
 }
 add_action( 'plugins_loaded', 'sib_integration_load_plugin_textdomain' );
 
-/*
- * Dead code
- */
-function sib_integration_cssjs() {
-	wp_enqueue_style( 'sib_integration-admin_css', plugins_url('sendinblue-integration/css/admin.css', 'sendinblue-integration') );
-	wp_enqueue_style( 'sib_integration-jquery_ui', plugins_url('sendinblue-integration/js/jquery-ui-1.12.1.custom/jquery-ui.min.css', 'sendinblue-integration') );
-	wp_enqueue_script( 'sib_integration-jquery_ui', plugins_url('sendinblue-integration/js/jquery-ui-1.12.1.custom/jquery-ui.min.js', 'sendinblue-integration'), array(), false, true );
+// Outputs settings section
+function sib_integration_settings_section($arg) {
+	;
 }
 
-/*
- * Dead code
- */
-function sib_integration_menu() {
-	$hook_suffix = add_menu_page( 'SendInBlue Integration', 'SendInBlue Integration', 'publish_posts', 'sendinblue-integration', 'sib_integration_view');
+// Register settings
+function sib_integration_settings_register() {
+	add_settings_section( 'sendinblue-integration', __('Newsletter default settings'), 'sib_integration_settings_register', 'sendinblue-integration_settings' );
+
+	register_setting( 'sendinblue-integration', 'sib_newsletter_default_add_events', 'boolval' );
+	register_setting( 'sendinblue-integration', 'sib_newsletter_default_add_days', 'intval' );
+	register_setting( 'sendinblue-integration', 'sib_newsletter_default_add_posts', 'boolval' );
+	register_setting( 'sendinblue-integration', 'sib_newsletter_default_add_posts_count', 'intval' );
+	register_setting( 'sendinblue-integration', 'sib_newsletter_default_add_posts_categories', 'is_array' );
+
+	add_settings_field( 'sib_newsletter_default_add_events', __('Add Events to Newsletter'), 'sib_integration_settings_default_add_events', 'sendinblue-integration_settings', 'sendinblue-integration' );
+	add_settings_field( 'sib_newsletter_default_add_events_days', __('How many days ahead we should display events'), 'sib_integration_settings_default_add_events_days', 'sendinblue-integration_settings', 'sendinblue-integration' );
+	add_settings_field( 'sib_newsletter_default_add_posts', __('Add Posts to Newsletter'), 'sib_integration_settings_default_add_posts', 'sendinblue-integration_settings', 'sendinblue-integration' );
+	add_settings_field( 'sib_newsletter_default_add_posts_count', __('How many posts we should display in Newsletter'), 'sib_integration_settings_default_add_posts_count', 'sendinblue-integration_settings', 'sendinblue-integration' );
+	add_settings_field( 'sib_newsletter_default_add_posts_categories', __('Categories of posts that will be retrieved'), 'sib_integration_settings_default_add_posts_categories', 'sendinblue-integration_settings', 'sendinblue-integration' );
 }
+add_action( 'admin_init', 'sib_integration_settings_register' );
+
+// Outputs code for each setting field
+function sib_integration_settings_default_add_events() {
+	$option_value = get_option('sib_newsletter_default_add_events', true);
+	echo '<input type="checkbox" id="sib_newsletter_default_add_events" name="sib_newsletter_default_add_events" ' . ($option_value ? 'checked="checked"' : '') . '" value="1" />';
+}
+function sib_integration_settings_default_add_events_days() {
+	$option_value = get_option('sib_newsletter_default_add_events_days', 30);
+	echo '<input type="text" id="sib_newsletter_default_events_days" name="sib_newsletter_default_events_days" value="' . htmlspecialchars($option_value) . '" />';
+}
+function sib_integration_settings_default_add_posts() {
+	$option_value = get_option('sib_newsletter_default_add_posts', false);
+	echo '<input type="checkbox" id="sib_newsletter_default_add_posts" name="sib_newsletter_default_add_posts" ' . ($option_value ? 'checked="checked"' : '') . '" value = "1" />';
+}
+function sib_integration_settings_default_add_posts_count() {
+	$option_value = get_option('sib_newsletter_default_add_posts_count', true);
+	echo '<input type="text" id="sib_newsletter_default_add_posts_count" name="sib_newsletter_default_add_posts_count" value="' . htmlspecialchars($option_value) . '" />';
+}
+function sib_integration_settings_default_add_posts_categories() {
+	$option_value = get_option('sib_newsletter_default_add_posts_categories');
+	echo '<select id="sib_newsletter_default_posts_categories" name="sib_newsletter_default_posts_categories" multiple>';
+	$categories = get_categories();
+	if ($categories && is_array($categories)) {
+		foreach ($categories as $category) {
+			echo '<option value="' . $category->term_id . '"' . (is_array($option_value) && in_array($category->term_id, $option_value) ? 'selected="selected"' : '') . '>' . htmlspecialchars($category->name) . '</option>';
+		}
+	}
+	echo '</select>';
+}
+
+// Outputs settings form
+function sib_integration_settings_form() {
+	echo '<form action="" method="post">';
+	settings_fields('sendinblue-integration');
+	do_settings_sections('sendinblue-integration_settings');
+	echo '<input type="submit" />';
+	echo '</form>';
+}
+
+// Add submenu for settings
+function sib_integration_menu() {
+	$hook_suffix = add_submenu_page( 'edit.php?post_type=sib_newsletter', __('Settings'), __('Settings'), 'manage_options', 'sendinblue-integration_settings', 'sib_integration_settings_form');
+}
+add_action('admin_menu', 'sib_integration_menu');
 
 // Create the campaign in SendInBlue, and return the ID if successful
 function _sib_integration_create_campaign( $post_id ) {
@@ -323,7 +373,7 @@ function sib_integration_newsletter_metabox_content($post) {
 	$categories = get_categories();
 	$categories_options = '';
 	foreach ($categories as $category) {
-		$categories_options .= '<option value="' . $category->term_id . '"' . (isset($add_post_categories) ? (in_array($catgory->term_id, $add_post_categories) ? 'selected="selected"' : '') : (in_array($category->term_id, $add_posts_categories_default) ? 'selected="selected"' : '')) . '>' . htmlspecialchars($category->name) . '</option>';
+		$categories_options .= '<option value="' . $category->term_id . '"' . (isset($add_post_categories) ? (in_array($category->term_id, $add_post_categories) ? 'selected="selected"' : '') : (in_array($category->term_id, $add_posts_categories_default) ? 'selected="selected"' : '')) . '>' . htmlspecialchars($category->name) . '</option>';
 	}
 	echo '<label><input type="checkbox" name="sib_newsletter_add_posts" ' . ($add_posts ? 'checked="checked"' : ($add_posts_default ? 'checked="checked"' : '')) . ' value="1" /> ' . __('Add Posts to Newsletter') . '</label>';
 	echo '&nbsp;';
