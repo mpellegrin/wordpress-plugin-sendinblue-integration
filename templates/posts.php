@@ -1,15 +1,26 @@
 <?php
-$days = get_post_meta(get_the_ID(), 'sib_newsletter_add_events_days', true);
-if (!$days) {
-	$days = get_option('sib_newsletter_default_add_events_days', 30);
+if (get_the_ID()) {
+	$post_id = get_the_ID();
+} else {
+	$post_id = '';
 }
-$start_date = strftime('%Y-%m-%d %H:%M:%S', get_the_date('U'));
-$end_date = strftime('%Y-%m-%d %H:%M:%S', strtotime('+' . $days . ' days', get_the_date('U')));
-$events = tribe_get_events(array('post_status' => 'publish', 'start_date' => $start_date, 'end_date' => $end_date));
-setlocale(LC_ALL, get_locale() . '.utf-8');
+$categories = get_post_meta($post_id,'sib_newsletter_add_posts_categories', true);
+$default_categories = get_option('sib_newsletter_default_add_posts_categories');
+$limit = get_post_meta($post_id,'sib_newsletter_add_posts_count', true);
+$default_limit = get_option('sib_newsletter_default_add_posts_count');
+$args = array(
+	'category__in' => ($add_posts_categories && is_array($add_posts_categories) ? $add_posts_categories : $default_categories),
+	'post_status' => 'publish',
+	'order' => 'DESC',
+	'ignore_sticky_posts' => true,
+	'posts_per_page' => ($limit ? $limit : $default_limit),
+);
+$posts = new WP_Query($args);
 ?>
-<?php foreach ($events as $post): ?>
-<?php setup_postdata($post); ?>
+<?php if ($posts->have_posts()): ?>
+<?php while ($posts->have_posts()): ?>
+<?php $posts->the_post(); ?>
+<?php if (is_preview()) { $post_id = (int) $_GET['preview_id']; } else { $post_id = $post->ID; } ?>
 <?php $e = error_reporting(error_reporting() & ~E_NOTICE); ?>
 <tr>
 	<td style="background-color:#d6d6d6;" bgcolor="#d6d6d6" align="center" valign="top">
@@ -32,11 +43,6 @@ setlocale(LC_ALL, get_locale() . '.utf-8');
 									<tr><td style="font-size:18px; font-family:Arial,Helvetica,sans-serif; color:#555; text-align:left;">
 										<a href="<?php echo get_permalink($post->ID); ?>">
 											<span style="color:#555; "><strong><span style="font-size:18px;"><?php echo $post->post_title; ?></span></strong></span>
-										</a>
-									</td></tr>
-									<tr><td style="font-size:18px; font-family:Arial,Helvetica,sans-serif; color:#555; text-align:left;">
-										<a href="<?php echo get_permalink($post->ID); ?>">
-											<span style="color:#555; "><strong><span style="font-size:18px;"><?php echo strftime('%d', strtotime($post->EventStartDate)) . ' ' . htmlentities(ucfirst(strftime('%B', strtotime($post->EventStartDate)))); ?></span></strong></span>
 										</a>
 									</td></tr>
 									<tr>
@@ -81,5 +87,6 @@ setlocale(LC_ALL, get_locale() . '.utf-8');
 	</td>
 </tr>
 
-<?php endforeach; ?>
+<?php endwhile; ?>
+<?php endif; ?>
 <?php if (isset($e)) { error_reporting($e); } ?>

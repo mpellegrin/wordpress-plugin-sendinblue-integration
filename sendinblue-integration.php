@@ -346,12 +346,12 @@ add_action('add_meta_boxes','sib_integration_add_metabox');
 function sib_integration_newsletter_metabox_content($post) {
 	$add_events = get_post_meta($post->ID,'sib_newsletter_add_events', true);
 	$add_events_default = get_option('sib_newsletter_default_add_events');
-	$add_events_days = get_post_meta($post->ID,'sib_newsletter_add_events', true);
+	$add_events_days = get_post_meta($post->ID,'sib_newsletter_add_events_days', true);
 	$add_events_days_default = get_option('sib_newsletter_default_add_events_days');
 	echo '<div>';
 	echo '<label><input type="checkbox" name="sib_newsletter_add_events" ' . ($add_events ? 'checked="checked"' : ($add_events_default ? 'checked="checked"' : '')) . ' value="1" /> ' . __('Add Events to Newsletter', 'sendinblue-integration') . '</label>';
 	echo '&nbsp;';
-	echo '<label>' . sprintf(__('Show events %s days ahead', 'sendinblue-integration'), '<input type="text" name="sib_newsletter_add_events" size="2" value="' . (is_int($add_events_days) ? htmlspecialchars($add_events_days) : htmlspecialchars($add_events_days_default)) . '" />') . '</label>';
+	echo '<label>' . sprintf(__('Show events %s days ahead', 'sendinblue-integration'), '<input type="text" name="sib_newsletter_add_events_days" size="2" value="' . ($add_events_days != '' ? htmlspecialchars($add_events_days) : htmlspecialchars($add_events_days_default)) . '" />') . '</label>';
 	echo '</div>';
 	echo '<div>';
 	$add_posts = get_post_meta($post->ID,'sib_newsletter_add_posts', true);
