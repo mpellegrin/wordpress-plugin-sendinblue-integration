@@ -32,6 +32,12 @@ function sib_integration_load_plugin_textdomain() {
 }
 add_action( 'plugins_loaded', 'sib_integration_load_plugin_textdomain' );
 
+// Register new image size
+function sib_integration_register_imagesize() {
+	add_image_size( 'sib_newsletter_thumbnail', 550, 400, true );
+}
+add_action( 'init', 'sib_integration_register_imagesize' );
+
 // Outputs settings section
 function sib_integration_settings_section($arg) {
 	;

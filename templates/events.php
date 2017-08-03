@@ -24,7 +24,7 @@ setlocale(LC_ALL, get_locale() . '.utf-8');
 										<td style="font-size:1px; line-height:1px;" height="20">&nbsp;</td>
 									</tr>
 									<?php if (has_post_thumbnail($post->ID)): ?>
-									<tr><td class="img-block-center" align="left" width="100%" valign="top"><a href="<?php echo get_permalink($post->ID); ?>"><img width="100%" src="<?php echo get_the_post_thumbnail_url($post->ID, 'large'); ?>" /></a></td></tr>
+									<tr><td class="img-block-center" align="left" width="100%" valign="top"><a href="<?php echo get_permalink($post->ID); ?>"><img width="100%" src="<?php echo get_the_post_thumbnail_url($post->ID, 'sib_newsletter_thumbnail'); ?>" /></a></td></tr>
 									<tr>
 										<td class="col_td_gap" style="font-size:1px; line-height:1px;" height="10">&nbsp;</td>
 									</tr>
