@@ -39,7 +39,7 @@ function sib_integration_settings_section($arg) {
 
 // Register settings
 function sib_integration_settings_register() {
-	add_settings_section( 'sendinblue-integration', __('Newsletter default settings'), 'sib_integration_settings_register', 'sendinblue-integration_settings' );
+	add_settings_section( 'sendinblue-integration', __('Newsletter default settings', 'sendinblue-integration'), 'sib_integration_settings_register', 'sendinblue-integration_settings' );
 
 	register_setting( 'sendinblue-integration', 'sib_newsletter_default_add_events', 'boolval' );
 	register_setting( 'sendinblue-integration', 'sib_newsletter_default_add_events_days', 'intval' );
@@ -47,11 +47,11 @@ function sib_integration_settings_register() {
 	register_setting( 'sendinblue-integration', 'sib_newsletter_default_add_posts_count', 'intval' );
 	register_setting( 'sendinblue-integration', 'sib_newsletter_default_add_posts_categories' );
 
-	add_settings_field( 'sib_newsletter_default_add_events', __('Add Events to Newsletter'), 'sib_integration_settings_default_add_events', 'sendinblue-integration_settings', 'sendinblue-integration' );
-	add_settings_field( 'sib_newsletter_default_add_events_days', __('How many days ahead we should display events'), 'sib_integration_settings_default_add_events_days', 'sendinblue-integration_settings', 'sendinblue-integration' );
-	add_settings_field( 'sib_newsletter_default_add_posts', __('Add Posts to Newsletter'), 'sib_integration_settings_default_add_posts', 'sendinblue-integration_settings', 'sendinblue-integration' );
-	add_settings_field( 'sib_newsletter_default_add_posts_count', __('How many posts we should display in Newsletter'), 'sib_integration_settings_default_add_posts_count', 'sendinblue-integration_settings', 'sendinblue-integration' );
-	add_settings_field( 'sib_newsletter_default_add_posts_categories', __('Categories of posts that will be retrieved'), 'sib_integration_settings_default_add_posts_categories', 'sendinblue-integration_settings', 'sendinblue-integration' );
+	add_settings_field( 'sib_newsletter_default_add_events', __('Add Events to Newsletter', 'sendinblue-integration'), 'sib_integration_settings_default_add_events', 'sendinblue-integration_settings', 'sendinblue-integration' );
+	add_settings_field( 'sib_newsletter_default_add_events_days', __('How many days ahead we should display events', 'sendinblue-integration'), 'sib_integration_settings_default_add_events_days', 'sendinblue-integration_settings', 'sendinblue-integration' );
+	add_settings_field( 'sib_newsletter_default_add_posts', __('Add Posts to Newsletter', 'sendinblue-integration'), 'sib_integration_settings_default_add_posts', 'sendinblue-integration_settings', 'sendinblue-integration' );
+	add_settings_field( 'sib_newsletter_default_add_posts_count', __('How many posts we should display in Newsletter', 'sendinblue-integration'), 'sib_integration_settings_default_add_posts_count', 'sendinblue-integration_settings', 'sendinblue-integration' );
+	add_settings_field( 'sib_newsletter_default_add_posts_categories', __('Categories of posts that will be retrieved', 'sendinblue-integration'), 'sib_integration_settings_default_add_posts_categories', 'sendinblue-integration_settings', 'sendinblue-integration' );
 }
 add_action( 'admin_init', 'sib_integration_settings_register' );
 
@@ -95,7 +95,7 @@ function sib_integration_settings_form() {
 
 // Add submenu for settings
 function sib_integration_menu() {
-	$hook_suffix = add_submenu_page( 'edit.php?post_type=sib_newsletter', __('Settings'), __('Settings'), 'manage_options', 'sendinblue-integration_settings', 'sib_integration_settings_form');
+	$hook_suffix = add_submenu_page( 'edit.php?post_type=sib_newsletter', __('Settings', 'sendinblue-integration'), __('Settings', 'sendinblue-integration'), 'manage_options', 'sendinblue-integration_settings', 'sib_integration_settings_form');
 }
 add_action('admin_menu', 'sib_integration_menu');
 
@@ -338,7 +338,7 @@ add_action( 'save_post', 'sib_save_newsletter' );
 
 // Meta box to configure Newsletter
 function sib_integration_add_metabox() {
-	add_meta_box('sib_integration_newsletter_configure', __('Configure Newsletter'), 'sib_integration_newsletter_metabox_content', 'sib_newsletter', 'normal');
+	add_meta_box('sib_integration_newsletter_configure', __('Configure Newsletter', 'sendinblue-integration'), 'sib_integration_newsletter_metabox_content', 'sib_newsletter', 'normal');
 }
 add_action('add_meta_boxes','sib_integration_add_metabox');
 
@@ -349,9 +349,9 @@ function sib_integration_newsletter_metabox_content($post) {
 	$add_events_days = get_post_meta($post->ID,'sib_newsletter_add_events', true);
 	$add_events_days_default = get_option('sib_newsletter_default_add_events_days');
 	echo '<div>';
-	echo '<label><input type="checkbox" name="sib_newsletter_add_events" ' . ($add_events ? 'checked="checked"' : ($add_events_default ? 'checked="checked"' : '')) . ' value="1" /> ' . __('Add Events to Newsletter') . '</label>';
+	echo '<label><input type="checkbox" name="sib_newsletter_add_events" ' . ($add_events ? 'checked="checked"' : ($add_events_default ? 'checked="checked"' : '')) . ' value="1" /> ' . __('Add Events to Newsletter', 'sendinblue-integration') . '</label>';
 	echo '&nbsp;';
-	echo '<label>' . sprintf(__('Show events %s days ahead'), '<input type="text" name="sib_newsletter_add_events" size="2" value="' . (is_int($add_events_days) ? htmlspecialchars($add_events_days) : htmlspecialchars($add_events_days_default)) . '" />') . '</label>';
+	echo '<label>' . sprintf(__('Show events %s days ahead', 'sendinblue-integration'), '<input type="text" name="sib_newsletter_add_events" size="2" value="' . (is_int($add_events_days) ? htmlspecialchars($add_events_days) : htmlspecialchars($add_events_days_default)) . '" />') . '</label>';
 	echo '</div>';
 	echo '<div>';
 	$add_posts = get_post_meta($post->ID,'sib_newsletter_add_posts', true);
@@ -365,9 +365,9 @@ function sib_integration_newsletter_metabox_content($post) {
 	foreach ($categories as $category) {
 		$categories_options .= '<option value="' . $category->term_id . '"' . (isset($add_posts_categories) && is_array($add_posts_categories) ? (in_array($category->term_id, $add_posts_categories) ? 'selected="selected"' : '') : (is_array($add_posts_categories_default) && in_array($category->term_id, $add_posts_categories_default) ? 'selected="selected"' : '')) . '>' . htmlspecialchars($category->name) . '</option>';
 	}
-	echo '<label><input type="checkbox" name="sib_newsletter_add_posts" ' . ($add_posts ? 'checked="checked"' : ($add_posts_default ? 'checked="checked"' : '')) . ' value="1" /> ' . __('Add Posts to Newsletter') . '</label>';
+	echo '<label><input type="checkbox" name="sib_newsletter_add_posts" ' . ($add_posts ? 'checked="checked"' : ($add_posts_default ? 'checked="checked"' : '')) . ' value="1" /> ' . __('Add Posts to Newsletter', 'sendinblue-integration') . '</label>';
 	echo '&nbsp;';
-	echo '<label>' . sprintf(__('Show %s posts from categories %s'), '<input type="text" name="sib_newsletter_add_posts" size="2" value="'. ($add_posts_count ? $add_posts_count : $add_posts_count_default) . '" />', '<select name="sib_newsletter_add_posts_categories[]" multiple size="' . count($categories) . '">' . $categories_options . '</select>') . '</label>';
+	echo '<label>' . sprintf(__('Show %s posts from categories %s', 'sendinblue-integration'), '<input type="text" name="sib_newsletter_add_posts" size="2" value="'. ($add_posts_count ? $add_posts_count : $add_posts_count_default) . '" />', '<select name="sib_newsletter_add_posts_categories[]" multiple size="' . count($categories) . '">' . $categories_options . '</select>') . '</label>';
 	echo '</div>';
 }
 
