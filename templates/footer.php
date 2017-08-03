@@ -55,7 +55,7 @@
 								</tr>
 								<tr>
 									<td style="font-size:14px; color:#919191; font-weight:normal; text-align:center; font-family:Arial,Helvetica,sans-serif;">
-										<div><?php printf(esc_html__('Copyright &copy; %1$s %2$s', 'sib-integration'), date('Y'), get_bloginfo('name')); ?></div>
+										<div><?php printf(esc_html__('Copyright &copy; %1$s %2$s', 'sendinblue-integration'), date('Y'), get_bloginfo('name')); ?></div>
 									</td>
 								</tr>
 								<tr>

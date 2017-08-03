@@ -2,7 +2,6 @@
 $start_date = strftime('%Y-%m-%d %H:%M:%S', time());
 $end_date = strftime('%Y-%m-%d %H:%M:%S', strtotime('+30 days'));
 $events = tribe_get_events(array('post_status' => 'publish', 'start_date' => $start_date, 'end_date' => $end_date));
-setlocale(LC_ALL, get_locale() . '.utf-8');
 ?>
 <?php foreach ($events as $post): ?>
 <?php setup_postdata($post); ?>
@@ -25,14 +24,9 @@ setlocale(LC_ALL, get_locale() . '.utf-8');
 										<td class="col_td_gap" style="font-size:1px; line-height:1px;" height="10">&nbsp;</td>
 									</tr>
 									<?php endif; ?>
-									<tr><td style="font-size:18px; font-family:Arial,Helvetica,sans-serif; color:#555; text-align:left;">
+									<tr><td style="font-size:18px; font-family:Arial,Helvetica,sans-serif; color:#999; text-align:left;">
 										<a href="<?php echo get_permalink($post->ID); ?>">
-											<span style="color:#555; "><strong><span style="font-size:18px;"><?php echo $post->post_title; ?></span></strong></span>
-										</a>
-									</td></tr>
-									<tr><td style="font-size:18px; font-family:Arial,Helvetica,sans-serif; color:#555; text-align:left;">
-										<a href="<?php echo get_permalink($post->ID); ?>">
-											<span style="color:#555; "><strong><span style="font-size:18px;"><?php echo strftime('%d', strtotime($post->EventStartDate)) . ' ' . htmlentities(ucfirst(strftime('%B', strtotime($post->EventStartDate)))); ?></span></strong></span>
+											<span style="color:#999; "><strong><span style="font-size:18px;"><?php echo $post->post_title; ?></span></strong></span>
 										</a>
 									</td></tr>
 									<tr>
