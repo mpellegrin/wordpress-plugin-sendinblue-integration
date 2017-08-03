@@ -277,3 +277,61 @@ function sib_save_newsletter($post_id) {
 	}
 }
 add_action( 'save_post', 'sib_save_newsletter' );
+
+// Meta box to configure Newsletter
+function sib_integration_add_metabox() {
+	add_meta_box('sib_integration_newsletter_configure', __('Configure Newsletter'), 'sib_integration_newsletter_metabox_content', 'sib_newsletter', 'normal');
+}
+add_action('add_meta_boxes','sib_integration_add_metabox');
+
+// Newsletter metabox content
+function sib_integration_newsletter_metabox_content($post) {
+	$add_events = get_post_meta($post->ID,'sib_newsletter_add_events', true);
+	$add_events_default = get_option('sib_newsletter_default_add_events');
+	$add_events_days = get_post_meta($post->ID,'sib_newsletter_add_events', true);
+	$add_events_days_default = get_option('sib_newsletter_default_add_events_days');
+	echo '<div>';
+	echo '<label><input type="checkbox" name="sib_newsletter_add_events" ' . ($add_events ? 'checked="checked"' : ($add_events_default ? 'checked="checked"' : '')) . ' value="1" /> ' . __('Add Events to Newsletter') . '</label>';
+	echo '&nbsp;';
+	echo '<label>' . sprintf(__('Show events %s days ahead'), '<input type="text" name="sib_newsletter_add_events" size="2" value="' . htmlspecialchars($add_events_days) . '" />') . '</label>';
+	echo '</div>';
+	echo '<div>';
+	$add_posts = get_post_meta($post->ID,'sib_newsletter_add_posts', true);
+	$add_posts_default = get_option('sib_newsletter_default_add_posts');
+	$add_posts_count = get_post_meta($post->ID,'sib_newsletter_add_posts', true);
+	$add_posts_count_default = get_option('sib_newsletter_default_add_posts_count');
+	$add_posts_categories = get_post_meta($post->ID,'sib_newsletter_add_posts_categories', false);
+	$add_posts_categories_default = get_option('sib_newsletter_default_add_posts_categories');
+	$categories = get_categories();
+	$categories_options = '';
+	foreach ($categories as $category) {
+		$categories_options .= '<option value="' . $category->term_id . '"' . (isset($add_post_categories) ? (in_array($catgory->term_id, $add_post_categories) ? 'selected="selected"' : '') : (in_array($category->term_id, $add_posts_categories_default) ? 'selected="selected"' : '')) . '>' . htmlspecialchars($category->name) . '</option>';
+	}
+	echo '<label><input type="checkbox" name="sib_newsletter_add_posts" ' . ($add_posts ? 'checked="checked"' : ($add_posts_default ? 'checked="checked"' : '')) . ' value="1" /> ' . __('Add Posts to Newsletter') . '</label>';
+	echo '&nbsp;';
+	echo '<label>' . sprintf(__('Show %s posts from categories %s'), '<input type="text" name="sib_newsletter_add_posts" size="2" value="'. ($add_posts_count ? $add_posts_count : $add_posts_count_default) . '" />', '<select name="sib_newsletter_add_posts_categories" multiple size="' . count($categories) . '">' . $categories_options . '</select>') . '</label>';
+	echo '</div>';
+}
+
+// Callback on post save to save Newsletter metabox
+function sib_integration_newsletter_metabox_save($post_id) {
+  if (isset($_POST['sib_newsletter_add_events'])) {
+    update_post_meta($post_id, 'sib_newsletter_add_events', (bool) $_POST['sib_newsletter_add_events']);
+   }
+  if (isset($_POST['sib_newsletter_add_events_days'])) {
+    update_post_meta($post_id, 'sib_newsletter_add_events_days', (int) $_POST['sib_newsletter_add_events_days']);
+   }
+  if (isset($_POST['sib_newsletter_add_posts'])) {
+    update_post_meta($post_id, 'sib_newsletter_add_posts', (bool) $_POST['sib_newsletter_add_posts']);
+   }
+  if (isset($_POST['sib_newsletter_add_posts_count'])) {
+    update_post_meta($post_id, 'sib_newsletter_add_posts_count', (int) $_POST['sib_newsletter_add_posts_count']);
+   }
+  if (isset($_POST['sib_newsletter_add_posts_categories'])) {
+	delete_post_meta($post_id, 'sib_newsletter_add_posts_categories');
+	foreach ($_POST['sib_newsletter_add_posts_categories'] as $category) {
+		add_post_meta($post_id, 'sib_newsletter_add_posts_categories', (int) $category);
+	}
+   }
+}
+add_action('save_post','sib_integration_newsletter_metabox_save');
