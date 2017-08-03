@@ -149,6 +149,27 @@ function _sib_integration_create_campaign( $post_id ) {
 }
 
 
+// Check if the campaign is already sent
+function _sib_integration_campaign_is_sent( $campaign_id ) {
+	$mailin = _sib_integration_get_api();
+
+	if ($campaign_id && $campaign_id != '' && $campaign_id > 0) {
+		// Get campaign
+		$data = array( 'id' => $campaign_id );
+		$result = $mailin->get_campaign_v2($data);
+		if ($result['code'] == 'success') {
+			return (strtolower($result['data'][0]['status']) == 'sent');
+		} else {
+			// Pretend the campaign is sent
+			return true;
+		}
+	} else {
+		// If something went wrong, pretend the campaign is sent
+		return true;
+	}
+}
+
+
 // Update the campaign in SendInBlue, and return the ID if successful
 function _sib_integration_update_campaign( $post_id ) {
 	$mailin = _sib_integration_get_api();
@@ -322,7 +343,22 @@ function sib_save_newsletter($post_id) {
 
 	$campaign_id = get_post_meta($post_id, 'sib_campaign_id', true);
 	if ($campaign_id) {
-		_sib_integration_update_campaign($post_id);
+		// Check if campaign is sent, if true, create a new campaign
+		if (_sib_integration_campaign_is_sent($campaign_id)) {
+			// unhook this function so it doesn't loop infinitely
+			remove_action( 'save_post', 'sib_save_newsletter' );
+
+			// update the post, which calls save_post again
+			$campaign_id = _sib_integration_create_campaign($post_id);
+			if ($campaign_id) {
+				update_post_meta($post_id, 'sib_campaign_id', $campaign_id);
+			} else {
+				// Something gone wrong
+				;
+			}
+		} else {
+			_sib_integration_update_campaign($post_id);
+		}
 	} else {
 		// unhook this function so it doesn't loop infinitely
 		remove_action( 'save_post', 'sib_save_newsletter' );
