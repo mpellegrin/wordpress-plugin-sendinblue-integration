@@ -11,6 +11,7 @@ $args = array(
 	'posts_per_page' => ($limit ? $limit : $default_limit),
 );
 $posts = new WP_Query($args);
+$newsletter_post = $GLOBALS['post'];
 ?>
 <?php if ($posts->have_posts()): ?>
 <?php while ($posts->have_posts()): ?>
@@ -85,3 +86,4 @@ $posts = new WP_Query($args);
 <?php endwhile; ?>
 <?php endif; ?>
 <?php if (isset($e)) { error_reporting($e); } ?>
+<?php $GLOBALS['post'] = $newsletter_post; ?>
