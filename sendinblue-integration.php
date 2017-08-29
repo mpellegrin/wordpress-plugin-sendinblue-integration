@@ -430,3 +430,25 @@ function sib_integration_newsletter_metabox_save($post_id) {
 	}
 }
 add_action('save_post','sib_integration_newsletter_metabox_save');
+
+function sib_reverse_parseurl($array) {
+	$scheme   = isset($array['scheme']) ? $array['scheme'] . '://' : '';
+	$host     = isset($array['host']) ? $array['host'] : '';
+	$port     = isset($array['port']) ? ':' . $array['port'] : '';
+	$user     = isset($array['user']) ? $array['user'] : '';
+	$pass     = isset($array['pass']) ? ':' . $array['pass']  : '';
+	$pass     = ($user || $pass) ? "$pass@" : '';
+	$path     = isset($array['path']) ? $array['path'] : '';
+	$query    = isset($array['query']) ? '?' . $array['query'] : '';
+	$fragment = isset($array['fragment']) ? '#' . $array['fragment'] : '';
+	return $scheme . $user . $pass . $host . $port . $path . $query . $fragment;
+}
+
+function sib_escape_url($url) {
+	$url = parse_url($url);
+	$path = explode('/', $url['path']);
+	array_walk($path, function(&$value, &$key) { $value = urlencode($value); });
+	$path = implode('/', $path);
+	$url['path'] = $path;
+	return sib_reverse_parseurl($url);
+}

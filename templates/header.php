@@ -42,7 +42,7 @@ $posts = new WP_Query($args);
 										<td style="font-size:1px; line-height:1px;" height="20">&nbsp;</td>
 									</tr>
 									<?php if (has_post_thumbnail($post_id)): ?>
-									<tr><td class="img-block-center" align="center" style="max-width: 100%;" valign="top"><a href="<?php echo htmlentities(get_site_url()); ?>"><img style="max-width: 100%;" src="<?php echo htmlentities(get_the_post_thumbnail_url($post_id, 'sib_newsletter_thumbnail')); ?>" /></a></td></tr>
+									<tr><td class="img-block-center" align="center" style="max-width: 100%;" valign="top"><a href="<?php echo sib_escape_url(get_site_url()); ?>"><img style="max-width: 100%;" src="<?php echo sib_escape_url(get_the_post_thumbnail_url($post_id, 'sib_newsletter_thumbnail')); ?>" /></a></td></tr>
 									<tr>
 										<td class="col_td_gap" style="font-size:1px; line-height:1px;" height="10">&nbsp;</td>
 									</tr>

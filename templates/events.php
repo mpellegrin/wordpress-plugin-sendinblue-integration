@@ -24,19 +24,19 @@ setlocale(LC_ALL, get_locale() . '.utf-8');
 										<td style="font-size:1px; line-height:1px;" height="20">&nbsp;</td>
 									</tr>
 									<?php if (has_post_thumbnail($post->ID)): ?>
-									<tr><td class="img-block-center" align="left" width="100%" valign="top"><a href="<?php echo htmlentities(get_permalink($post->ID)); ?>"><img width="100%" src="<?php echo htmlentities(get_the_post_thumbnail_url($post->ID, 'sib_newsletter_thumbnail')); ?>" /></a></td></tr>
+									<tr><td class="img-block-center" align="left" width="100%" valign="top"><a href="<?php echo sib_escape_url(get_permalink($post->ID)); ?>"><img width="100%" src="<?php echo sib_escape_url(get_the_post_thumbnail_url($post->ID, 'sib_newsletter_thumbnail')); ?>" /></a></td></tr>
 									<tr>
 										<td class="col_td_gap" style="font-size:1px; line-height:1px;" height="10">&nbsp;</td>
 									</tr>
 									<?php endif; ?>
 									<tr><td style="font-size:18px; font-family:Arial,Helvetica,sans-serif; color:#555; text-align:left;">
-										<a href="<?php echo htmlentities(get_permalink($post->ID)); ?>">
-											<span style="color:#555; "><strong><span style="font-size:18px;"><?php echo htmlentities($post->post_title); ?></span></strong></span>
+										<a href="<?php echo sib_escape_url(get_permalink($post->ID)); ?>">
+											<span style="color:#555; "><strong><span style="font-size:18px;"><?php echo sib_escape_url($post->post_title); ?></span></strong></span>
 										</a>
 									</td></tr>
 									<tr><td style="font-size:18px; font-family:Arial,Helvetica,sans-serif; color:#555; text-align:left;">
-										<a href="<?php echo htmlentities(get_permalink($post->ID)); ?>">
-											<span style="color:#555; "><strong><span style="font-size:18px;"><?php echo strftime('%d', strtotime($post->EventStartDate)) . ' ' . htmlentities(ucfirst(strftime('%B', strtotime($post->EventStartDate)))); ?></span></strong></span>
+										<a href="<?php echo sib_escape_url(get_permalink($post->ID)); ?>">
+											<span style="color:#555; "><strong><span style="font-size:18px;"><?php echo strftime('%d', strtotime($post->EventStartDate)) . ' ' . sib_escape_url(ucfirst(strftime('%B', strtotime($post->EventStartDate)))); ?></span></strong></span>
 										</a>
 									</td></tr>
 									<tr>
@@ -44,7 +44,7 @@ setlocale(LC_ALL, get_locale() . '.utf-8');
 									</tr>
 									<tr><td style="font-size:14px; font-family:Arial,Helvetica,sans-serif, sans-serif; color:#555;">
 										<?php the_content(''); ?>
-										<a href="<?php echo htmlentities(get_permalink($post->ID)); ?>">
+										<a href="<?php echo sib_escape_url(get_permalink($post->ID)); ?>">
 											<span class="read-more"><?php echo __('Read more', 'sendinblue-integration'); ?></span>
 										</a>
 									</td></tr>
