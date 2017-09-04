@@ -31,7 +31,7 @@ setlocale(LC_ALL, get_locale() . '.utf-8');
 									<?php endif; ?>
 									<tr><td style="font-size:18px; font-family:Arial,Helvetica,sans-serif; color:#555; text-align:left;">
 										<a href="<?php echo sib_escape_url(get_permalink($post->ID)); ?>">
-											<span style="color:#555; "><strong><span style="font-size:18px;"><?php echo sib_escape_url($post->post_title); ?></span></strong></span>
+											<span style="color:#555; "><strong><span style="font-size:18px;"><?php echo htmlspecialchars($post->post_title); ?></span></strong></span>
 										</a>
 									</td></tr>
 									<tr><td style="font-size:18px; font-family:Arial,Helvetica,sans-serif; color:#555; text-align:left;">
