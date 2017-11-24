@@ -36,7 +36,7 @@ setlocale(LC_ALL, get_locale() . '.utf-8');
 									</td></tr>
 									<tr><td style="font-size:18px; font-family:Arial,Helvetica,sans-serif; color:#555; text-align:left;">
 										<a href="<?php echo sib_escape_url(get_permalink($post->ID)); ?>">
-											<span style="color:#555; "><strong><span style="font-size:18px;"><?php echo strftime('%d', strtotime($post->EventStartDate)) . ' ' . sib_escape_url(ucfirst(strftime('%B', strtotime($post->EventStartDate)))); ?></span></strong></span>
+											<span style="color:#555; "><strong><span style="font-size:18px;"><?php echo strftime('%d', strtotime($post->EventStartDate)) . ' ' . htmlspecialchars(ucfirst(strftime('%B', strtotime($post->EventStartDate)))); ?></span></strong></span>
 										</a>
 									</td></tr>
 									<tr>
