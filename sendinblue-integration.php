@@ -52,12 +52,14 @@ function sib_integration_settings_register() {
 	register_setting( 'sendinblue-integration', 'sib_newsletter_default_add_posts', 'boolval' );
 	register_setting( 'sendinblue-integration', 'sib_newsletter_default_add_posts_count', 'intval' );
 	register_setting( 'sendinblue-integration', 'sib_newsletter_default_add_posts_categories' );
+	register_setting( 'sendinblue-integration', 'sib_newsletter_default_add_posts_position' );
 
 	add_settings_field( 'sib_newsletter_default_add_events', __('Add Events to Newsletter', 'sendinblue-integration'), 'sib_integration_settings_default_add_events', 'sendinblue-integration_settings', 'sendinblue-integration' );
 	add_settings_field( 'sib_newsletter_default_add_events_days', __('How many days ahead we should display events', 'sendinblue-integration'), 'sib_integration_settings_default_add_events_days', 'sendinblue-integration_settings', 'sendinblue-integration' );
 	add_settings_field( 'sib_newsletter_default_add_posts', __('Add Posts to Newsletter', 'sendinblue-integration'), 'sib_integration_settings_default_add_posts', 'sendinblue-integration_settings', 'sendinblue-integration' );
 	add_settings_field( 'sib_newsletter_default_add_posts_count', __('How many posts we should display in Newsletter', 'sendinblue-integration'), 'sib_integration_settings_default_add_posts_count', 'sendinblue-integration_settings', 'sendinblue-integration' );
 	add_settings_field( 'sib_newsletter_default_add_posts_categories', __('Categories of posts that will be retrieved', 'sendinblue-integration'), 'sib_integration_settings_default_add_posts_categories', 'sendinblue-integration_settings', 'sendinblue-integration' );
+	add_settings_field( 'sib_newsletter_default_add_posts_position', __('Position of the Posts : before or after Events', 'sendinblue-integration'), 'sib_integration_settings_default_add_posts_position', 'sendinblue-integration_settings', 'sendinblue-integration' );
 }
 add_action( 'admin_init', 'sib_integration_settings_register' );
 
@@ -88,6 +90,11 @@ function sib_integration_settings_default_add_posts_categories() {
 		}
 	}
 	echo '</select>';
+}
+function sib_integration_settings_default_add_posts_position() {
+	$option_value = get_option('sib_newsletter_default_add_posts_position');
+	echo '<input type="radio" id="sib_newsletter_default_add_posts_position_after" name="sib_newsletter_default_add_posts_position" ' . ($option_value == 'after' ? 'checked="checked"' : '') . '" value = "after" /><label for="sib_newsletter_default_add_posts_position_after">' . __('Show Posts after Events', 'sendinblue-integration') . '</label><br />';
+	echo '<input type="radio" id="sib_newsletter_default_add_posts_position_before" name="sib_newsletter_default_add_posts_position" ' . ($option_value == 'before' ? 'checked="checked"' : '') . '" value = "before" /><label for="sib_newsletter_default_add_posts_position_before">' . __('Show Posts before Events', 'sendinblue-integration') . '</label>';
 }
 
 // Outputs settings form
@@ -407,10 +414,12 @@ function sib_integration_newsletter_metabox_content($post) {
 		$add_posts = get_post_meta($post->ID, 'sib_newsletter_add_posts', true);
 		$add_posts_count = get_post_meta($post->ID, 'sib_newsletter_add_posts', true);
 		$add_posts_categories = get_post_meta($post->ID, 'sib_newsletter_add_posts_categories', true);
+		$add_posts_position = get_post_meta($post->ID, 'sib_newsletter_add_posts_position', true);
 	} else {
 		$add_posts = get_option('sib_newsletter_default_add_posts');
 		$add_posts_count = get_option('sib_newsletter_default_add_posts_count');
 		$add_posts_categories = get_option('sib_newsletter_default_add_posts_categories');
+		$add_posts_position = get_option('sib_newsletter_default_add_posts_position');
 	}
 	$categories = get_categories();
 	$categories_options = '';
@@ -420,6 +429,10 @@ function sib_integration_newsletter_metabox_content($post) {
 	echo '<label><input type="checkbox" name="sib_newsletter_add_posts" ' . ($add_posts ? 'checked="checked"' : '') . ' value="1" /> ' . __('Add Posts to Newsletter', 'sendinblue-integration') . '</label>';
 	echo '&nbsp;';
 	echo '<label>' . sprintf(__('Show %s posts from categories %s', 'sendinblue-integration'), '<input type="text" name="sib_newsletter_add_posts_count" size="2" value="'. (isset($add_posts_count) ? htmlspecialchars($add_posts_count) : '0') . '" />', '<select name="sib_newsletter_add_posts_categories[]" multiple size="' . count($categories) . '">' . $categories_options . '</select>') . '</label>';
+	echo '</div>';
+	echo '<div>';
+	echo '<input type="radio" id="sib_newsletter_default_add_posts_position_after" name="sib_newsletter_add_posts_position" ' . ($add_posts_position == 'after' ? 'checked="checked"' : '') . '" value = "after" /><label for="sib_newsletter_default_add_posts_position_after">' . __('Show Posts after Events', 'sendinblue-integration') . '</label><br />';
+	echo '<input type="radio" id="sib_newsletter_default_add_posts_position_before" name="sib_newsletter_add_posts_position" ' . ($add_posts_position == 'before' ? 'checked="checked"' : '') . '" value = "before" /><label for="sib_newsletter_default_add_posts_position_before">' . __('Show Posts before Events', 'sendinblue-integration') . '</label>';
 	echo '</div>';
 }
 
@@ -438,6 +451,10 @@ function sib_integration_newsletter_metabox_save($post_id) {
 		*/
 		update_post_meta($post_id, 'sib_newsletter_add_posts_categories', $_POST['sib_newsletter_add_posts_categories']);
 	}
+	if (isset($_POST['sib_newsletter_add_posts_position']) && $_POST['sib_newsletter_add_posts_position'] == 'after' ||$_POST['sib_newsletter_add_posts_position'] == 'before') {
+		update_post_meta($post_id, 'sib_newsletter_add_posts_position', @$_POST['sib_newsletter_add_posts_position']);
+	}
+
 }
 add_action('save_post','sib_integration_newsletter_metabox_save');
 
@@ -474,4 +491,45 @@ function sib_is_edit_page($new_edit = null){
         return in_array( $pagenow, array( 'post-new.php' ) );
     else //check for either new or edit
         return in_array( $pagenow, array( 'post.php', 'post-new.php' ) );
+}
+
+// Very dirty processing of galleries, to extract images and setup a new HTML content
+function sib_process_galleries($html) {
+	return $html;
+	/*
+	$galleries_regex = '/<div\s+.*class="gallery\s+.*>(\s*<figure class="gallery-item"><\/figure>\s)*<\/div>/'
+	if (preg_match_all($galleries_regex, $html, $galleries)) {
+	}
+
+	return $html;
+	error_reporting(E_ALL);
+	ini_set('display_errors', true);
+	$dom = new DomDocument();
+	libxml_use_internal_errors(true);
+	$dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOXMLDECL | LIBXML_NOWARNING);
+	libxml_clear_errors();
+	$xpath = new DomXPath($dom);
+	$galleries = $xpath->query("//*[contains(@class, 'gallery')]");
+	if ($galleries) {
+		foreach ($galleries as $gallery) {
+			$images = $xpath->query("//*[contains(@class, 'gallery-item')]//img", $gallery);
+			$newHTML = '<div class="gallery">';
+			foreach ($images as $image) {
+				$src = $image->getAttribute('src');
+				$src = preg_replace('/-[0-9]+x[0-9]+(\.[a-z]{3,4})/', '/150x150\1/', $src);
+				$newHTML .= '<div class="gallery-item"><img src="' . $src . '" /></div>';
+			}
+			$newHTML .= '</gallery>';
+			$newDocument = new DomDocument();
+			libxml_use_internal_errors(true);
+			$newDocument->loadHTML($newHTML, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOXMLDECL | LIBXML_NOWARNING);
+			libxml_clear_errors();
+			//$newNode = $newDocument->childNodes[0];
+			//$dom->importNode($newNode);
+			$gallery->parentNode->replaceChild($newNode, $gallery);
+		}
+	}
+	$html = $dom->saveHTML();
+	return $html;
+	*/
 }

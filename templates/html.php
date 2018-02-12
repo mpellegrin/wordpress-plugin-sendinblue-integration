@@ -378,13 +378,23 @@
                             <?php
                                 $display_events = get_post_meta(get_the_ID(), 'sib_newsletter_add_events', true);
                                 $display_posts = get_post_meta(get_the_ID(), 'sib_newsletter_add_posts', true);
+                                $display_posts_position = get_post_meta(get_the_ID(), 'sib_newsletter_add_posts_position', true);
                             ?>
                             <?php require(__DIR__ . '/header.php'); ?>
-                            <?php if ($display_posts): ?>
-                            <?php require(__DIR__ . '/posts.php'); ?>
-                            <?php endif; ?>
-                            <?php if ($display_events): ?>
-                            <?php require(__DIR__ . '/events.php'); ?>
+                            <?php if ($display_posts_position != 'after'): ?>
+                                <?php if ($display_posts): ?>
+                                <?php require(__DIR__ . '/posts.php'); ?>
+                                <?php endif; ?>
+                                <?php if ($display_events): ?>
+                                <?php require(__DIR__ . '/events.php'); ?>
+                                <?php endif; ?>
+                            <?php else: ?>
+                                <?php if ($display_events): ?>
+                                <?php require(__DIR__ . '/events.php'); ?>
+                                <?php endif; ?>
+                                <?php if ($display_posts): ?>
+                                <?php require(__DIR__ . '/posts.php'); ?>
+                                <?php endif; ?>
                             <?php endif; ?>
                             <?php require(__DIR__ . '/footer.php'); ?>
                         </tbody>
