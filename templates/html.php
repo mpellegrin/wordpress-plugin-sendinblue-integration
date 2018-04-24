@@ -297,6 +297,21 @@
             text-align: center;
             color: #000;
         }
+
+        .gallery-item {
+            display: inline-block;
+            margin: 5px;
+            max-width: 45%;
+        }
+        .gallery-item img {
+                max-width: 100%;
+                height: auto;
+        }
+        .gallery-caption {
+            background: #555;
+            color: #fff;
+            padding: 5px;
+        }
     </style>
     <!--[if gte mso 11]><style type="text/css">table{border-spacing: 0; }table td {border-collapse: separate;}</style><![endif]-->
     <!--[if !mso]><!-->
