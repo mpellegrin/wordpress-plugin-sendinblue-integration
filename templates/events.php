@@ -70,7 +70,7 @@ setlocale(LC_ALL, get_locale() . '.utf-8');
 						<table style="background-color:#d6d6d6;" cellspacing="0" cellpadding="0" border="0" bgcolor="#d6d6d6" width="100%" height="30">
 							<tbody>
 								<tr>
-									<td valign="top" height="30"> <img style="display:block; max-height:30px; max-width:20px;" alt="" src="http://img.mailinblue.com/new_images/rnb/rnb_space.gif" width="20" height="30"> </td>
+									<td valign="top" height="30"> <img style="display:block; max-height:30px; max-width:20px;" alt="" src="https://img.mailinblue.com/new_images/rnb/rnb_space.gif" width="20" height="30"> </td>
 								</tr>
 							</tbody>
 						</table>
