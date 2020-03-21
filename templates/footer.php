@@ -26,7 +26,7 @@
 									<td>
 										<div style="text-align:center;">
 											<div style="font-family:Arial, Helvetica, sans-serif;color:#aaaaaa;opacity:0.8">Envoyé par</div>
-											<a href="https://www.sendinblue.com/" target="_blank"><img alt="SendinBlue" style="margin:auto;" src="http://img.mailinblue.com/new_images/rnb/logo_nb_en.png" border="0" vspace="0" hspace="0">
+											<a href="https://www.sendinblue.com/" target="_blank"><img alt="SendinBlue" style="margin:auto;" src="https://img.mailinblue.com/new_images/rnb/logo_nb_en.png" border="0" vspace="0" hspace="0">
 											</a>
 										</div>
 									</td>

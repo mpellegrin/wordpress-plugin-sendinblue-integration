@@ -36,7 +36,7 @@ setlocale(LC_ALL, get_locale() . '.utf-8');
 									</td></tr>
 									<tr><td style="font-size:18px; font-family:Arial,Helvetica,sans-serif; color:#555; text-align:left;">
 										<a href="<?php echo sib_escape_url(get_permalink($post->ID)); ?>">
-											<span style="color:#555; "><strong><span style="font-size:18px;"><?php echo strftime('%d', strtotime($post->EventStartDate)) . ' ' . htmlspecialchars(ucfirst(strftime('%B', strtotime($post->EventStartDate)))); ?></span></strong></span>
+											<span style="color:#555; "><strong><span style="font-size:18px;"><?php echo strftime('%d', strtotime($post->event_date)) . ' ' . htmlspecialchars(ucfirst(strftime('%B', strtotime($post->event_date)))); ?></span></strong></span>
 										</a>
 									</td></tr>
 									<tr>
@@ -70,7 +70,7 @@ setlocale(LC_ALL, get_locale() . '.utf-8');
 						<table style="background-color:#d6d6d6;" cellspacing="0" cellpadding="0" border="0" bgcolor="#d6d6d6" width="100%" height="30">
 							<tbody>
 								<tr>
-									<td valign="top" height="30"> <img style="display:block; max-height:30px; max-width:20px;" alt="" src="http://img.mailinblue.com/new_images/rnb/rnb_space.gif" width="20" height="30"> </td>
+									<td valign="top" height="30"> <img style="display:block; max-height:30px; max-width:20px;" alt="" src="https://img.mailinblue.com/new_images/rnb/rnb_space.gif" width="20" height="30"> </td>
 								</tr>
 							</tbody>
 						</table>
