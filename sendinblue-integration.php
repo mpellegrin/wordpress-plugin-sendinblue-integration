@@ -412,7 +412,7 @@ function sib_integration_newsletter_metabox_content($post) {
 	// Articles
 	if (sib_is_edit_page('edit')) {
 		$add_posts = get_post_meta($post->ID, 'sib_newsletter_add_posts', true);
-		$add_posts_count = get_post_meta($post->ID, 'sib_newsletter_add_posts', true);
+		$add_posts_count = get_post_meta($post->ID, 'sib_newsletter_add_posts_count', true);
 		$add_posts_categories = get_post_meta($post->ID, 'sib_newsletter_add_posts_categories', true);
 		$add_posts_position = get_post_meta($post->ID, 'sib_newsletter_add_posts_position', true);
 	} else {
