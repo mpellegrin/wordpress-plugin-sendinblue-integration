@@ -352,7 +352,7 @@
                                                                 <td style="font-size:1px; line-height:1px;" height="10">&nbsp;</td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="font-size: 13px; color: rgb(255, 255, 255); font-weight: normal; text-align: center; font-family: Arial,Helvetica,sans-serif;" align="center" height="20"> <span style="color: rgb(255, 255, 255); text-decoration: none;"> <a target="_blank" href="[MIRROR]" style="text-decoration: none; color: rgb(255, 255, 255);"><?php echo _e('See online version', 'sendinblue-integration'); ?></a></span> </td>
+                                                                <td style="font-size: 13px; color: rgb(255, 255, 255); font-weight: normal; text-align: center; font-family: Arial,Helvetica,sans-serif;" align="center" height="20"> <span style="color: rgb(255, 255, 255); text-decoration: none;"> <a target="_blank" href="{{ mirror }}" style="text-decoration: none; color: rgb(255, 255, 255);"><?php echo _e('See online version', 'sendinblue-integration'); ?></a></span> </td>
                                                             </tr>
                                                             <tr>
                                                                 <td style="font-size:1px; line-height:1px;" height="10">&nbsp;</td>

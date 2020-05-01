@@ -11,11 +11,11 @@
 								</tr>
 								<tr>
 									<td>
-										<div style="font-size:14px; color:#919191; font-weight:normal; text-align:center; font-family:Arial,Helvetica,sans-serif;">Cet email a été envoyé à {EMAIL}.
+										<div style="font-size:14px; color:#919191; font-weight:normal; text-align:center; font-family:Arial,Helvetica,sans-serif;">Cet email a été envoyé à {{ contact.EMAIL }}.
 											<div>Vous avez reçu cet email car vous vous êtes inscrit sur <?php echo get_bloginfo('name') ?>.</div>
 											<div>&nbsp;</div>
 										</div>
-										<div style="font-size:14px; font-weight:normal; text-align:center; font-family:Arial,Helvetica,sans-serif;"> <a style="text-decoration:none; color:#ccc;font-size:14px;font-weight:normal;font-family:Arial,Helvetica,sans-serif;" target="_blank" href="[UNSUBSCRIBE]">Se désinscrire</a>
+										<div style="font-size:14px; font-weight:normal; text-align:center; font-family:Arial,Helvetica,sans-serif;"> <a style="text-decoration:none; color:#ccc;font-size:14px;font-weight:normal;font-family:Arial,Helvetica,sans-serif;" target="_blank" href="{{ unsubscribe }}">Se désinscrire</a>
 										</div>
 									</td>
 								</tr>
