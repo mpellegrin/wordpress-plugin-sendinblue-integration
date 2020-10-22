@@ -16,8 +16,8 @@ License: GPL v3 - http://www.gnu.org/licenses/gpl-3.0.html
 */
 
 
-if (!class_exists('Mailin')) {
-	require_once(__DIR__ . '/api/mailin.php');
+if (!class_exists('MailinLegacy')) {
+	require_once(__DIR__ . '/api/mailin_legacy.php');
 }
 
 require_once(__DIR__ . '/includes/newsletter.type.php');
@@ -128,7 +128,7 @@ function _sib_integration_create_campaign( $post_id ) {
 
 		// Get Senders
 		$data = array( "option" => "" );
-		$result = $mailin->get_senders($data);
+		$result = $mailin->senders($data);
 
 		if ($result['code'] == 'success') {
 			$senders = $result['data'];
@@ -193,7 +193,7 @@ function _sib_integration_update_campaign( $post_id ) {
 
 		// Get Senders
 		$data = array( "option" => "" );
-		$result = $mailin->get_senders($data);
+		$result = $mailin->senders($data);
 
 		if ($result['code'] == 'success') {
 			$senders = $result['data'];
@@ -282,7 +282,7 @@ function _sib_integration_get_accesskey() {
 function _sib_integration_get_api() {
 	static $mailin = null;
 	if ($mailin === null) {
-		$mailin = new Mailin('https://api.sendinblue.com/v2.0', _sib_integration_get_accesskey());
+		$mailin = new MailinLegacy('https://api.sendinblue.com/v3.0', _sib_integration_get_accesskey());
 	}
 	return $mailin;
 }

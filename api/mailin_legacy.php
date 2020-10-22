@@ -4,7 +4,7 @@
  * SendinBlue REST client
  */
 
-class Mailin
+class MailinLegacy
 {
     public $api_key;
     public $base_url;
@@ -715,7 +715,7 @@ class Mailin
         @param {Array} data contains php array with key value pair.
         @options data {String} option: Options to get senders. Possible options – IP-wise, & Domain-wise ( only for dedicated IP clients ). Example: to get senders with specific IP, use $option=’1.2.3.4′, to get senders with specific domain use, $option=’domain.com’, & to get all senders, use $option="" [Optional]
     */
-    public function get_senders($data)
+    public function senders($data)
     {
         return $this->get("advanced",json_encode($data));
     }
